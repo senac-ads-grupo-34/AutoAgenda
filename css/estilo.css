@@ -1,0 +1,265 @@
+/* Cores inspiradas em Velozes e Furiosos:
+   o Dodge Charger preto do Toretto e o Nissan Skyline branco do Brian. */
+:root {
+  --preto-charger: #0d0d0f;
+  --grafite: #2a2b31;
+  --branco-skyline: #ffffff;
+  --prata: #eceef1;
+  --cromado: #b8bcc4;
+  --azul-nitro: #1f5fd6;
+  --azul-nitro-escuro: #1747a6;
+  --cinza-texto: #4b5059;
+  --cor-sucesso: #166534;
+  --cor-erro: #b91c1c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  line-height: 1.5;
+  color: var(--preto-charger);
+  background-color: var(--prata);
+}
+
+a {
+  color: var(--azul-nitro);
+}
+
+h1 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cabecalho {
+  padding: 12px 16px;
+  background-color: var(--preto-charger);
+  border-bottom: 3px solid var(--cromado);
+}
+
+.marca {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background-color: var(--grafite);
+}
+
+.menu a[aria-current="page"] {
+  background-color: var(--azul-nitro);
+}
+
+.conteudo {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.cartao {
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid var(--cromado);
+  border-radius: 8px;
+  background-color: var(--branco-skyline);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+legend {
+  padding: 0;
+  color: var(--cinza-texto);
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--cromado);
+  border-radius: 6px;
+  background-color: white;
+  font: inherit;
+}
+
+input:focus {
+  border-color: var(--azul-nitro);
+}
+
+input:user-invalid,
+select:user-invalid {
+  border: 2px solid var(--cor-erro);
+}
+
+.dica {
+  color: var(--cinza-texto);
+  font-size: 0.875rem;
+}
+
+.botao {
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--cromado);
+  border-radius: 6px;
+  color: var(--preto-charger);
+  background-color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background-color: #e8e9ec;
+}
+
+.botao-principal {
+  border-color: var(--azul-nitro);
+  color: white;
+  background-color: var(--azul-nitro);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.botao-principal:hover {
+  background-color: var(--azul-nitro-escuro);
+}
+
+.botao-pequeno {
+  min-height: 36px;
+  margin: 0 4px 0 0;
+  padding: 4px 12px;
+}
+
+.mensagem:empty {
+  display: none;
+}
+
+.mensagem-sucesso,
+.mensagem-erro {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.mensagem-sucesso {
+  background-color: #dcfce7;
+  color: var(--cor-sucesso);
+}
+
+.mensagem-erro {
+  background-color: #fee2e2;
+  color: var(--cor-erro);
+}
+
+.tabela-rolavel {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  border-bottom: 1px solid var(--cromado);
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  color: white;
+  background-color: var(--grafite);
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--azul-nitro);
+  outline-offset: 2px;
+}
+
+.rodape {
+  padding: 16px;
+  text-align: center;
+  color: var(--cinza-texto);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--cromado);
+}
+
+@media (min-width: 768px) {
+  .cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu {
+    margin-top: 0;
+  }
+
+  .conteudo {
+    padding: 24px;
+  }
+}
+
+@media print {
+  .cabecalho,
+  .rodape,
+  .botao {
+    display: none;
+  }
+
+  body,
+  .cartao {
+    color: black;
+    background: white;
+    border: none;
+  }
+
+  th {
+    color: black;
+    background: white;
+  }
+}
