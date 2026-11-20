@@ -8,6 +8,69 @@
   <script src="js/armazenamento.js" defer></script>
   <script src="js/utilidades.js" defer></script>
   <script src="js/orcamento.js" defer></script>
+  <style>
+    /* Estilos extras só para impressão do orçamento */
+    @media print {
+      .cabecalho,
+      .rodape,
+      .nao-imprimir {
+        display: none !important;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+      .cartao {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .conteudo {
+        max-width: none;
+        padding: 0;
+      }
+    }
+
+    .orcamento-cabecalho {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .orcamento-dados p {
+      margin: 4px 0;
+    }
+
+    .orcamento-total {
+      margin-top: 16px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .tabela-servicos {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tabela-servicos th,
+    .tabela-servicos td {
+      padding: 8px;
+      border-bottom: 1px solid var(--cromado);
+      text-align: left;
+    }
+
+    .tabela-servicos th {
+      background: var(--prata);
+    }
+
+    .tabela-servicos td:last-child,
+    .tabela-servicos th:last-child {
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
   <header class="cabecalho">
@@ -28,7 +91,55 @@
     <h1>Orçamento</h1>
     <p id="mensagem" class="mensagem" role="status"></p>
 
-    <p class="dica">Página em desenvolvimento (RF06).</p>
+    <div id="aviso-sem-ordem" class="cartao" hidden>
+      <p class="dica">Nenhuma ordem selecionada. Abra o histórico e clique em “Ver orçamento”, ou acesse esta página com <code>?ordem=ID</code> na URL.</p>
+      <p><a href="historico.html" class="botao">Ir para o Histórico</a></p>
+    </div>
+
+    <section id="conteudo-orcamento" class="cartao" hidden>
+      <div class="orcamento-cabecalho">
+        <div>
+          <h2 style="margin-top:0">AutoAgenda</h2>
+          <p class="dica">Orçamento de serviços</p>
+        </div>
+        <div class="orcamento-dados" style="text-align:right">
+          <p><strong>Data:</strong> <span id="orc-data"></span></p>
+          <p><strong>Situação:</strong> <span id="orc-situacao"></span></p>
+          <p><strong>Nº ordem:</strong> <span id="orc-id"></span></p>
+        </div>
+      </div>
+
+      <div class="orcamento-dados">
+        <h3>Cliente</h3>
+        <p id="orc-cliente-nome"></p>
+        <p id="orc-cliente-contato" class="dica"></p>
+      </div>
+
+      <div class="orcamento-dados">
+        <h3>Veículo</h3>
+        <p id="orc-veiculo"></p>
+      </div>
+
+      <h3>Serviços</h3>
+      <div class="tabela-rolavel">
+        <table class="tabela-servicos">
+          <thead>
+            <tr>
+              <th scope="col">Serviço</th>
+              <th scope="col">Valor</th>
+            </tr>
+          </thead>
+          <tbody id="lista-servicos"></tbody>
+        </table>
+      </div>
+
+      <p class="orcamento-total">Total: <span id="orc-total"></span></p>
+
+      <div class="nao-imprimir" style="margin-top:24px">
+        <button type="button" id="botao-imprimir" class="botao botao-principal">Imprimir orçamento</button>
+        <a href="historico.html" class="botao">Voltar ao histórico</a>
+      </div>
+    </section>
   </main>
 
   <footer class="rodape">

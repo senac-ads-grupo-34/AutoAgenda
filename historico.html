@@ -28,7 +28,42 @@
     <h1>Histórico</h1>
     <p id="mensagem" class="mensagem" role="status"></p>
 
-    <p class="dica">Página em desenvolvimento (RF05).</p>
+    <section class="cartao">
+      <h2>Filtrar ordens</h2>
+
+      <label for="filtro-cliente">Cliente</label>
+      <select id="filtro-cliente">
+        <option value="">Todos os clientes</option>
+      </select>
+
+      <label for="filtro-veiculo">Veículo</label>
+      <select id="filtro-veiculo">
+        <option value="">Todos os veículos</option>
+      </select>
+
+      <p class="dica">Escolha um cliente e/ou um veículo para filtrar. Deixe em branco para ver todas as ordens.</p>
+    </section>
+
+    <section class="cartao">
+      <h2>Ordens encontradas</h2>
+
+      <div class="tabela-rolavel">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Veículo</th>
+              <th scope="col">Situação</th>
+              <th scope="col">Total</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="lista"></tbody>
+        </table>
+      </div>
+      <p id="lista-vazia" class="dica" hidden>Nenhuma ordem encontrada com os filtros atuais.</p>
+    </section>
   </main>
 
   <footer class="rodape">
