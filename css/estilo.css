@@ -17,6 +17,11 @@
   box-sizing: border-box;
 }
 
+/* O atributo hidden tem que vencer as regras de display que vem depois. */
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   font-family: system-ui, Arial, sans-serif;
@@ -244,11 +249,105 @@ select:focus-visible {
   }
 }
 
+/* Lista de servicos da ordem de servico */
+.lista-itens {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-itens li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--cromado);
+}
+
+.lista-itens li:last-child {
+  border-bottom: none;
+}
+
+.lista-itens .preco {
+  margin-left: auto;
+  font-weight: bold;
+}
+
+.linha-adicionar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: end;
+  margin-top: 8px;
+}
+
+.linha-adicionar select {
+  flex: 1 1 220px;
+}
+
+.linha-adicionar .botao {
+  margin-top: 0;
+}
+
+/* Orcamento */
+.orcamento-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.orcamento-dados p {
+  margin: 4px 0;
+}
+
+.orcamento-total {
+  margin-top: 16px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+.tabela-servicos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-servicos th,
+.tabela-servicos td {
+  padding: 8px;
+  border-bottom: 1px solid var(--cromado);
+  text-align: left;
+}
+
+.tabela-servicos th {
+  color: var(--preto-charger);
+  background: var(--prata);
+}
+
+.tabela-servicos td:last-child,
+.tabela-servicos th:last-child {
+  text-align: right;
+}
+
 @media print {
   .cabecalho,
   .rodape,
-  .botao {
+  .botao,
+  .nao-imprimir {
     display: none;
+  }
+
+  .conteudo {
+    max-width: none;
+    padding: 0;
+  }
+
+  .cartao {
+    padding: 0;
+    box-shadow: none;
   }
 
   body,

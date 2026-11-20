@@ -12,18 +12,22 @@ Quem usa é o dono, o atendente ou o mecânico da oficina, então as telas são 
 
 ## Funcionalidades
 
+São os seis requisitos definidos na primeira etapa do projeto.
+
 | Código | Função | Página | Situação |
 | --- | --- | --- | --- |
 | RF01 | Cadastrar clientes com nome, telefone e e-mail | `clientes.html` | Pronto |
 | RF02 | Cadastrar veículos com placa, marca, modelo e ano, ligados a um cliente | `veiculos.html` | Pronto |
-| RF03 | Cadastrar os serviços da oficina com tempo médio e preço | `servicos.html` | Em desenvolvimento |
-| RF04 | Abrir ordens de serviço com cliente, veículo, data, situação e lista de serviços | `ordens.html` | Pronto |
-| RF05 | Consultar o histórico de ordens por cliente ou por veículo | `historico.html` | Pronto |
-| RF06 | Ver e imprimir o orçamento de uma ordem | `orcamento.html` | Pronto |
+| RF03 | Cadastrar os serviços da oficina com tempo médio e preço | `servicos.html` | Pronto |
+| RF04 | Agendar o atendimento informando cliente, veículo, data, horário e serviços | `ordens.html` | Pronto |
+| RF05 | Consultar a agenda por dia e impedir o agendamento em horário já ocupado | `ordens.html` e `historico.html` | Pronto |
+| RF06 | Alterar, cancelar e mudar a situação do agendamento | `ordens.html` | Pronto |
 
 Todas as telas de cadastro permitem editar, excluir e pesquisar.
 
-Enquanto o RF03 não fica pronto, a tela de ordens abre normalmente, mas não tem serviço nenhum para escolher e o total da ordem fica zerado.
+Além dos requisitos, o sistema ganhou duas telas a mais: o histórico, que filtra as ordens por cliente, veículo e data, e o orçamento, que monta uma página pronta para imprimir ou salvar em PDF com os serviços e o total da ordem.
+
+A trava de horário do RF05 funciona assim: a oficina atende uma ordem por vez, então ao tentar marcar uma segunda ordem no mesmo dia e horário o sistema recusa e avisa qual horário já está ocupado.
 
 ## Como rodar
 
@@ -56,9 +60,9 @@ index.html          página inicial
 clientes.html       RF01
 veiculos.html       RF02
 servicos.html       RF03
-ordens.html         RF04
-historico.html      RF05
-orcamento.html      RF06
+ordens.html         RF04, RF05 e RF06
+historico.html      consulta da agenda por dia
+orcamento.html      orcamento para impressao
 css/
   estilo.css        estilo de todas as páginas
 js/
@@ -113,12 +117,12 @@ Com a branch no GitHub, abra o pull request para a `main` e chame alguém do gru
 
 | Integrante | Responsabilidade |
 | --- | --- |
-| João Antonio Pereira Lemos Machado | Coordenação, documentação e cronograma |
+| João Antonio Pereira Lemos Machado | Coordenação, documentação, serviços e trava de horário |
 | Ana Flavia Ortiz de Paula | Persona e protótipo das telas |
 | Guilherme de Faria Martins da Silva | Revisão dos pull requests |
 | Lucas Sulzbach Rilho | Estrutura base, clientes e veículos (RF01 e RF02) |
-| Mateus Oliveira Macedo | Criação do repositório e serviços (RF03) |
-| Pedro Henrique de Freitas Menezes | Ordens de serviço, histórico e orçamento (RF04 a RF06) |
+| Mateus Oliveira Macedo | Criação do repositório e revisão dos serviços (RF03) |
+| Pedro Henrique de Freitas Menezes | Ordens de serviço, histórico e orçamento |
 | Vitor Yuri da Silva | CSS, adaptação para celular e testes |
 
 ## Tecnologias

@@ -1,13 +1,18 @@
-// Histórico (RF05): listar as ordens de um cliente ou veículo, da mais recente para a mais antiga.
+// Histórico: consulta as ordens por cliente, veículo ou dia, da mais recente para a mais antiga.
+// Completa o RF05, que pede a consulta da agenda por dia.
 // Cada linha tem um link para o orçamento: orcamento.html?ordem=<id>
 
 const filtroCliente = document.getElementById('filtro-cliente');
 const filtroVeiculo = document.getElementById('filtro-veiculo');
+const filtroData = document.getElementById('filtro-data');
+const botaoLimparFiltros = document.getElementById('botao-limpar-filtros');
 const corpoTabela = document.getElementById('lista');
 const avisoListaVazia = document.getElementById('lista-vazia');
 
 filtroCliente.addEventListener('change', aoMudarCliente);
 filtroVeiculo.addEventListener('change', mostrarOrdens);
+filtroData.addEventListener('change', mostrarOrdens);
+botaoLimparFiltros.addEventListener('click', limparFiltros);
 
 preencherFiltroClientes();
 preencherFiltroVeiculos();
@@ -44,6 +49,14 @@ function preencherFiltroVeiculos(clienteId) {
   }
 }
 
+function limparFiltros() {
+  filtroCliente.value = '';
+  preencherFiltroVeiculos(null);
+  filtroVeiculo.value = '';
+  filtroData.value = '';
+  mostrarOrdens();
+}
+
 function aoMudarCliente() {
   const clienteId = filtroCliente.value;
   preencherFiltroVeiculos(clienteId || null);
@@ -51,37 +64,10 @@ function aoMudarCliente() {
   mostrarOrdens();
 }
 
-function calcularTotal(itens) {
-  if (!Array.isArray(itens)) {
-    return 0;
-  }
-  return itens.reduce((soma, item) => soma + (Number(item.preco) || 0), 0);
-}
-
-function nomeDoCliente(clienteId) {
-  const cliente = buscarPorId('clientes', clienteId);
-  return cliente ? cliente.nome : '(cliente não encontrado)';
-}
-
-function descricaoDoVeiculo(veiculoId) {
-  const veiculo = buscarPorId('veiculos', veiculoId);
-  if (!veiculo) {
-    return '(veículo não encontrado)';
-  }
-  return exibirPlaca(veiculo.placa) + ' — ' + veiculo.marca + ' ' + veiculo.modelo;
-}
-
-function exibirPlaca(placa) {
-  const limpa = String(placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (limpa.length === 7) {
-    return limpa.slice(0, 3) + '-' + limpa.slice(3);
-  }
-  return limpa || '—';
-}
-
 function mostrarOrdens() {
   const clienteId = filtroCliente.value;
   const veiculoId = filtroVeiculo.value;
+  const data = filtroData.value;
 
   let ordens = lerTabela('ordens');
 
@@ -91,11 +77,17 @@ function mostrarOrdens() {
   if (veiculoId) {
     ordens = ordens.filter((o) => o.veiculoId === veiculoId);
   }
+  if (data) {
+    ordens = ordens.filter((o) => o.data === data);
+  }
 
   // Mais recente primeiro
   ordens.sort((a, b) => {
     if (a.data !== b.data) {
       return b.data.localeCompare(a.data);
+    }
+    if (a.hora !== b.hora) {
+      return String(b.hora || '').localeCompare(String(a.hora || ''));
     }
     return String(b.id).localeCompare(String(a.id));
   });
@@ -110,14 +102,14 @@ function mostrarOrdens() {
     linkOrcamento.href = 'orcamento.html?ordem=' + encodeURIComponent(ordem.id);
     linkOrcamento.textContent = 'Ver orçamento';
     linkOrcamento.className = 'botao botao-pequeno';
-    linkOrcamento.setAttribute('aria-label', 'Ver orçamento da ordem de ' + formatarData(ordem.data));
+    linkOrcamento.setAttribute('aria-label', 'Ver orçamento da ordem de ' + formatarDataHora(ordem.data, ordem.hora));
 
     celulaAcoes.append(linkOrcamento);
 
     const total = calcularTotal(ordem.itens);
 
     linha.append(
-      criarCelula(formatarData(ordem.data)),
+      criarCelula(formatarDataHora(ordem.data, ordem.hora)),
       criarCelula(nomeDoCliente(ordem.clienteId)),
       criarCelula(descricaoDoVeiculo(ordem.veiculoId)),
       criarCelula(ordem.situacao || '—'),
