@@ -14,6 +14,9 @@ filtroVeiculo.addEventListener('change', mostrarOrdens);
 filtroData.addEventListener('change', mostrarOrdens);
 botaoLimparFiltros.addEventListener('click', limparFiltros);
 
+// A página inicial abre o histórico já filtrado: historico.html?data=2026-11-20
+filtroData.value = new URLSearchParams(location.search).get('data') || '';
+
 preencherFiltroClientes();
 preencherFiltroVeiculos();
 mostrarOrdens();

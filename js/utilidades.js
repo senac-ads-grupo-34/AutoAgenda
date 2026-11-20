@@ -28,6 +28,15 @@ function formatarDinheiro(valor) {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+// Data de hoje no formato do <input type="date">, ex.: '2026-11-20'.
+// Usa o horário local; o toISOString() usa o de Londres e vira o dia depois das 21h.
+function dataDeHoje() {
+  const agora = new Date();
+  const mes = String(agora.getMonth() + 1).padStart(2, '0');
+  const dia = String(agora.getDate()).padStart(2, '0');
+  return agora.getFullYear() + '-' + mes + '-' + dia;
+}
+
 // '2026-11-20' -> '20/11/2026'
 function formatarData(dataDoCampo) {
   const [ano, mes, dia] = dataDoCampo.split('-');

@@ -40,7 +40,7 @@ botaoAdicionarServico.addEventListener('click', adicionarServico);
 campoPesquisa.addEventListener('input', mostrarOrdens);
 
 // Data padrão = hoje, horário padrão = 08:00
-campoData.value = new Date().toISOString().slice(0, 10);
+campoData.value = dataDeHoje();
 campoHora.value = '08:00';
 
 preencherListaDeClientes();
@@ -277,7 +277,7 @@ function excluirOrdem(ordem) {
 function limparFormulario() {
   formulario.reset();
   campoId.value = '';
-  campoData.value = new Date().toISOString().slice(0, 10);
+  campoData.value = dataDeHoje();
   campoHora.value = '08:00';
   campoSituacao.value = 'Aberta';
   itensDaOrdem = [];

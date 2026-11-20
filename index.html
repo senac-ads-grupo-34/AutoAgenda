@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Início | AutoAgenda</title>
   <link rel="stylesheet" href="css/estilo.css">
+  <script src="js/armazenamento.js" defer></script>
+  <script src="js/utilidades.js" defer></script>
+  <script src="js/inicio.js" defer></script>
 </head>
 <body>
   <header class="cabecalho">
@@ -22,16 +25,70 @@
   </header>
 
   <main class="conteudo">
-    <h1>AutoAgenda</h1>
-    <p>Clientes, veículos e ordens de serviço da oficina em um só lugar.</p>
+    <section class="destaque">
+      <p class="destaque-etiqueta">Oficina organizada</p>
+      <h1>AutoAgenda</h1>
+      <p class="destaque-texto">Clientes, veículos, serviços e a agenda da oficina em um só lugar, sem caderno e sem carro marcado no mesmo horário.</p>
+      <div class="destaque-acoes">
+        <a class="botao botao-principal" href="ordens.html">Nova ordem de serviço</a>
+        <a class="botao botao-contorno" id="link-agenda-hoje" href="historico.html">Ver a agenda de hoje</a>
+      </div>
+    </section>
 
-    <section class="cartao">
-      <h2>Por onde começar</h2>
-      <ol>
-        <li><a href="clientes.html">Cadastre o cliente</a></li>
-        <li><a href="veiculos.html">Cadastre o veículo do cliente</a></li>
-        <li><a href="servicos.html">Cadastre os serviços da oficina</a></li>
-        <li><a href="ordens.html">Abra uma ordem de serviço</a></li>
+    <section class="secao" aria-labelledby="titulo-resumo">
+      <h2 id="titulo-resumo" class="titulo-secao">Resumo da oficina</h2>
+      <div class="painel-numeros">
+        <a class="numero" href="clientes.html">
+          <span class="numero-valor" id="total-clientes">0</span>
+          <span class="numero-rotulo">Clientes</span>
+        </a>
+        <a class="numero" href="veiculos.html">
+          <span class="numero-valor" id="total-veiculos">0</span>
+          <span class="numero-rotulo">Veículos</span>
+        </a>
+        <a class="numero" href="servicos.html">
+          <span class="numero-valor" id="total-servicos">0</span>
+          <span class="numero-rotulo">Serviços</span>
+        </a>
+        <a class="numero numero-destaque" id="numero-hoje" href="historico.html">
+          <span class="numero-valor" id="total-hoje">0</span>
+          <span class="numero-rotulo">Na agenda de hoje</span>
+        </a>
+      </div>
+      <p class="dica" id="proximo-atendimento" hidden></p>
+    </section>
+
+    <section class="secao" aria-labelledby="titulo-passos">
+      <h2 id="titulo-passos" class="titulo-secao">Por onde começar</h2>
+      <ol class="passos">
+        <li>
+          <a class="passo" href="clientes.html">
+            <span class="passo-numero">1</span>
+            <strong>Cadastre o cliente</strong>
+            <span>Nome, telefone e e-mail para avisar quando o carro ficar pronto.</span>
+          </a>
+        </li>
+        <li>
+          <a class="passo" href="veiculos.html">
+            <span class="passo-numero">2</span>
+            <strong>Cadastre o veículo</strong>
+            <span>Placa, marca, modelo e ano, ligados ao dono.</span>
+          </a>
+        </li>
+        <li>
+          <a class="passo" href="servicos.html">
+            <span class="passo-numero">3</span>
+            <strong>Cadastre os serviços</strong>
+            <span>O que a oficina faz, quanto tempo leva e quanto custa.</span>
+          </a>
+        </li>
+        <li>
+          <a class="passo" href="ordens.html">
+            <span class="passo-numero">4</span>
+            <strong>Abra a ordem de serviço</strong>
+            <span>Escolha o dia e o horário. O sistema avisa se já estiver ocupado.</span>
+          </a>
+        </li>
       </ol>
     </section>
   </main>

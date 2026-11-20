@@ -56,7 +56,7 @@ Vale lembrar de três coisas ao testar:
 ## Estrutura dos arquivos
 
 ```
-index.html          página inicial
+index.html          página inicial com o resumo da oficina
 clientes.html       RF01
 veiculos.html       RF02
 servicos.html       RF03
@@ -68,7 +68,8 @@ css/
 js/
   armazenamento.js  ler, salvar e buscar no LocalStorage
   utilidades.js     mensagens, criação de células e botões, formatação de data e dinheiro
-  clientes.js       uma página, um arquivo
+  inicio.js         uma página, um arquivo
+  clientes.js
   veiculos.js
   servicos.js
   ordens.js
