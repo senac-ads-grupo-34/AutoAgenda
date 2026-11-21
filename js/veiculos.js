@@ -35,17 +35,6 @@ function preencherListaDeClientes() {
   avisoSemClientes.hidden = !semClientes;
 }
 
-// 'abc-1234' -> 'ABC1234'
-function padronizarPlaca(placa) {
-  return placa.trim().toUpperCase().replace('-', '');
-}
-
-// 'ABC1234' -> 'ABC-1234' (placa Mercosul fica igual: 'BRA2E19')
-function exibirPlaca(placa) {
-  const ehPlacaAntiga = /^[A-Z]{3}[0-9]{4}$/.test(placa);
-  return ehPlacaAntiga ? placa.slice(0, 3) + '-' + placa.slice(3) : placa;
-}
-
 function salvarVeiculo(evento) {
   evento.preventDefault();
 
@@ -97,13 +86,14 @@ function editarVeiculo(veiculo) {
 }
 
 function excluirVeiculo(veiculo) {
-  if (!confirm('Excluir o veículo ' + exibirPlaca(veiculo.placa) + '?')) {
-    return;
-  }
-
+  // Avisa antes de perguntar, para o usuário não confirmar algo que não vai acontecer.
   const ordensDoVeiculo = lerTabela('ordens').filter((ordem) => ordem.veiculoId === veiculo.id);
   if (ordensDoVeiculo.length > 0) {
     mostrarMensagem('Este veículo tem ordens de serviço e não pode ser excluído.', 'erro');
+    return;
+  }
+
+  if (!confirm('Excluir o veículo ' + exibirPlaca(veiculo.placa) + '?')) {
     return;
   }
 
@@ -123,11 +113,6 @@ function limparFormulario() {
   tituloFormulario.textContent = 'Novo veículo';
   botaoSalvar.textContent = 'Cadastrar veículo';
   botaoCancelar.hidden = true;
-}
-
-function nomeDoCliente(clienteId) {
-  const cliente = buscarPorId('clientes', clienteId);
-  return cliente ? cliente.nome : '(cliente não encontrado)';
 }
 
 function mostrarVeiculos() {

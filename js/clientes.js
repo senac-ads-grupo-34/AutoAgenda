@@ -63,13 +63,14 @@ function editarCliente(cliente) {
 }
 
 function excluirCliente(cliente) {
-  if (!confirm('Excluir o cliente "' + cliente.nome + '"?')) {
-    return;
-  }
-
+  // Avisa antes de perguntar, para o usuário não confirmar algo que não vai acontecer.
   const veiculosDoCliente = lerTabela('veiculos').filter((veiculo) => veiculo.clienteId === cliente.id);
   if (veiculosDoCliente.length > 0) {
     mostrarMensagem('Este cliente tem veículos cadastrados. Exclua os veículos primeiro.', 'erro');
+    return;
+  }
+
+  if (!confirm('Excluir o cliente "' + cliente.nome + '"?')) {
     return;
   }
 

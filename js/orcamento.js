@@ -1,4 +1,4 @@
-// Orçamento (RF06): mostrar cliente, veículo, serviços, total e um botão para imprimir.
+// Orçamento: mostra cliente, veículo, serviços, total e um botão para imprimir.
 // O id da ordem vem na URL: orcamento.html?ordem=<id>
 
 const idDaOrdem = new URLSearchParams(location.search).get('ordem');
@@ -26,7 +26,7 @@ function carregarOrcamento(id) {
 
   conteudoOrcamento.hidden = false;
 
-  document.getElementById('orc-data').textContent = formatarData(ordem.data);
+  document.getElementById('orc-data').textContent = formatarDataHora(ordem.data, ordem.hora);
   document.getElementById('orc-situacao').textContent = ordem.situacao || '—';
   document.getElementById('orc-id').textContent = ordem.id;
 
@@ -84,12 +84,4 @@ function carregarOrcamento(id) {
 
   document.getElementById('orc-total').textContent = formatarDinheiro(total);
   document.title = 'Orçamento ' + ordem.id + ' | AutoAgenda';
-}
-
-function exibirPlaca(placa) {
-  const limpa = String(placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (limpa.length === 7) {
-    return limpa.slice(0, 3) + '-' + limpa.slice(3);
-  }
-  return limpa || '—';
 }

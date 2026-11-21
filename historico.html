@@ -41,7 +41,11 @@
         <option value="">Todos os veículos</option>
       </select>
 
-      <p class="dica">Escolha um cliente e/ou um veículo para filtrar. Deixe em branco para ver todas as ordens.</p>
+      <label for="filtro-data">Data</label>
+      <input type="date" id="filtro-data">
+
+      <p class="dica">Escolha um cliente, um veículo e/ou uma data para filtrar. Deixe em branco para ver todas as ordens.</p>
+      <button type="button" id="botao-limpar-filtros" class="botao">Limpar filtros</button>
     </section>
 
     <section class="cartao">
@@ -51,7 +55,7 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">Data</th>
+              <th scope="col">Data e horário</th>
               <th scope="col">Cliente</th>
               <th scope="col">Veículo</th>
               <th scope="col">Situação</th>
