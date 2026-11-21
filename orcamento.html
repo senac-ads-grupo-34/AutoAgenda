@@ -8,69 +8,6 @@
   <script src="js/armazenamento.js" defer></script>
   <script src="js/utilidades.js" defer></script>
   <script src="js/orcamento.js" defer></script>
-  <style>
-    /* Estilos extras só para impressão do orçamento */
-    @media print {
-      .cabecalho,
-      .rodape,
-      .nao-imprimir {
-        display: none !important;
-      }
-      body {
-        background: white;
-        color: black;
-      }
-      .cartao {
-        border: none;
-        box-shadow: none;
-        padding: 0;
-      }
-      .conteudo {
-        max-width: none;
-        padding: 0;
-      }
-    }
-
-    .orcamento-cabecalho {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-
-    .orcamento-dados p {
-      margin: 4px 0;
-    }
-
-    .orcamento-total {
-      margin-top: 16px;
-      font-size: 1.25rem;
-      font-weight: bold;
-      text-align: right;
-    }
-
-    .tabela-servicos {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .tabela-servicos th,
-    .tabela-servicos td {
-      padding: 8px;
-      border-bottom: 1px solid var(--cromado);
-      text-align: left;
-    }
-
-    .tabela-servicos th {
-      background: var(--prata);
-    }
-
-    .tabela-servicos td:last-child,
-    .tabela-servicos th:last-child {
-      text-align: right;
-    }
-  </style>
 </head>
 <body>
   <header class="cabecalho">
@@ -103,7 +40,7 @@
           <p class="dica">Orçamento de serviços</p>
         </div>
         <div class="orcamento-dados" style="text-align:right">
-          <p><strong>Data:</strong> <span id="orc-data"></span></p>
+          <p><strong>Data e horário:</strong> <span id="orc-data"></span></p>
           <p><strong>Situação:</strong> <span id="orc-situacao"></span></p>
           <p><strong>Nº ordem:</strong> <span id="orc-id"></span></p>
         </div>

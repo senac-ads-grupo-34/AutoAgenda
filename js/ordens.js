@@ -1,9 +1,10 @@
-// Ordens de serviço (RF04): registrar, listar, editar, excluir e mudar a situação.
-// Use js/veiculos.js como modelo para o select de clientes.
+// Ordens de serviço (RF04 e RF06): agendar, listar, editar, excluir e mudar a situação.
 // Ao escolher o cliente, o select de veículos mostra só os veículos dele.
+// Parte do RF05: não deixa abrir duas ordens no mesmo dia e horário.
 //
-// Tabela 'ordens': { id, clienteId, veiculoId, data, situacao, itens }
+// Tabela 'ordens': { id, clienteId, veiculoId, data, hora, situacao, itens }
 // data: valor do <input type="date">. Ex.: '2026-11-20'
+// hora: valor do <input type="time">. Ex.: '14:30'
 // situacao: 'Aberta', 'Em andamento' ou 'Concluída'
 // itens: cópia dos serviços escolhidos. Ex.: [{ servicoId, nome: 'Troca de óleo', preco: 120 }]
 
@@ -13,6 +14,7 @@ const campoId = document.getElementById('ordem-id');
 const campoCliente = document.getElementById('ordem-cliente');
 const campoVeiculo = document.getElementById('ordem-veiculo');
 const campoData = document.getElementById('ordem-data');
+const campoHora = document.getElementById('ordem-hora');
 const campoSituacao = document.getElementById('ordem-situacao');
 const selectServico = document.getElementById('select-servico');
 const botaoAdicionarServico = document.getElementById('botao-adicionar-servico');
@@ -37,8 +39,9 @@ campoCliente.addEventListener('change', aoMudarCliente);
 botaoAdicionarServico.addEventListener('click', adicionarServico);
 campoPesquisa.addEventListener('input', mostrarOrdens);
 
-// Data padrão = hoje
-campoData.value = new Date().toISOString().slice(0, 10);
+// Data padrão = hoje, horário padrão = 08:00
+campoData.value = dataDeHoje();
+campoHora.value = '08:00';
 
 preencherListaDeClientes();
 preencherListaDeServicos();
@@ -176,6 +179,7 @@ function salvarOrdem(evento) {
     clienteId: campoCliente.value,
     veiculoId: campoVeiculo.value,
     data: campoData.value,
+    hora: campoHora.value,
     situacao: campoSituacao.value,
     itens: itensDaOrdem.map((item) => ({ ...item })),
   };
@@ -198,7 +202,22 @@ function salvarOrdem(evento) {
     return;
   }
 
+  if (!ordem.hora) {
+    mostrarMensagem('Informe o horário.', 'erro');
+    campoHora.focus();
+    return;
+  }
+
   const ordens = lerTabela('ordens');
+
+  // RF05: a oficina atende uma ordem por vez, então o horário não pode se repetir.
+  const horarioOcupado = ordens.some((item) =>
+    item.data === ordem.data && item.hora === ordem.hora && item.id !== ordem.id);
+  if (horarioOcupado) {
+    mostrarMensagem('Já existe uma ordem marcada para ' + formatarDataHora(ordem.data, ordem.hora) + '.', 'erro');
+    campoHora.focus();
+    return;
+  }
 
   if (ordem.id === '') {
     ordem.id = gerarId();
@@ -225,6 +244,7 @@ function editarOrdem(ordem) {
   preencherListaDeVeiculos(ordem.clienteId);
   campoVeiculo.value = ordem.veiculoId;
   campoData.value = ordem.data;
+  campoHora.value = ordem.hora || '';
   campoSituacao.value = ordem.situacao || 'Aberta';
 
   itensDaOrdem = Array.isArray(ordem.itens)
@@ -240,7 +260,7 @@ function editarOrdem(ordem) {
 
 function excluirOrdem(ordem) {
   const cliente = nomeDoCliente(ordem.clienteId);
-  if (!confirm('Excluir a ordem de ' + formatarData(ordem.data) + ' do cliente ' + cliente + '?')) {
+  if (!confirm('Excluir a ordem de ' + formatarDataHora(ordem.data, ordem.hora) + ' do cliente ' + cliente + '?')) {
     return;
   }
 
@@ -257,7 +277,8 @@ function excluirOrdem(ordem) {
 function limparFormulario() {
   formulario.reset();
   campoId.value = '';
-  campoData.value = new Date().toISOString().slice(0, 10);
+  campoData.value = dataDeHoje();
+  campoHora.value = '08:00';
   campoSituacao.value = 'Aberta';
   itensDaOrdem = [];
   renderizarItens();
@@ -273,37 +294,13 @@ function atualizarEstadoFormulario() {
   camposOrdem.disabled = clientes.length === 0;
 }
 
-function calcularTotal(itens) {
-  if (!Array.isArray(itens)) return 0;
-  return itens.reduce((soma, item) => soma + (Number(item.preco) || 0), 0);
-}
-
-function nomeDoCliente(clienteId) {
-  const cliente = buscarPorId('clientes', clienteId);
-  return cliente ? cliente.nome : '(cliente não encontrado)';
-}
-
-function descricaoDoVeiculo(veiculoId) {
-  const veiculo = buscarPorId('veiculos', veiculoId);
-  if (!veiculo) return '(veículo não encontrado)';
-  return exibirPlaca(veiculo.placa) + ' — ' + veiculo.marca + ' ' + veiculo.modelo;
-}
-
-function exibirPlaca(placa) {
-  const limpa = String(placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  if (limpa.length === 7) {
-    return limpa.slice(0, 3) + '-' + limpa.slice(3);
-  }
-  return limpa || '—';
-}
-
 function mostrarOrdens() {
   const busca = campoPesquisa.value.trim().toLowerCase();
 
   const ordens = lerTabela('ordens')
     .filter((ordem) => {
       const texto = [
-        formatarData(ordem.data),
+        formatarDataHora(ordem.data, ordem.hora),
         ordem.data,
         nomeDoCliente(ordem.clienteId),
         descricaoDoVeiculo(ordem.veiculoId),
@@ -313,6 +310,7 @@ function mostrarOrdens() {
     })
     .sort((a, b) => {
       if (a.data !== b.data) return b.data.localeCompare(a.data);
+      if (a.hora !== b.hora) return String(b.hora || '').localeCompare(String(a.hora || ''));
       return String(b.id).localeCompare(String(a.id));
     });
 
@@ -326,16 +324,16 @@ function mostrarOrdens() {
     linkOrcamento.href = 'orcamento.html?ordem=' + encodeURIComponent(ordem.id);
     linkOrcamento.textContent = 'Orçamento';
     linkOrcamento.className = 'botao botao-pequeno';
-    linkOrcamento.setAttribute('aria-label', 'Ver orçamento da ordem de ' + formatarData(ordem.data));
+    linkOrcamento.setAttribute('aria-label', 'Ver orçamento da ordem de ' + formatarDataHora(ordem.data, ordem.hora));
 
     celulaAcoes.append(
-      criarBotao('Editar', 'Editar ordem de ' + formatarData(ordem.data), () => editarOrdem(ordem)),
-      criarBotao('Excluir', 'Excluir ordem de ' + formatarData(ordem.data), () => excluirOrdem(ordem)),
+      criarBotao('Editar', 'Editar ordem de ' + formatarDataHora(ordem.data, ordem.hora), () => editarOrdem(ordem)),
+      criarBotao('Excluir', 'Excluir ordem de ' + formatarDataHora(ordem.data, ordem.hora), () => excluirOrdem(ordem)),
       linkOrcamento,
     );
 
     linha.append(
-      criarCelula(formatarData(ordem.data)),
+      criarCelula(formatarDataHora(ordem.data, ordem.hora)),
       criarCelula(nomeDoCliente(ordem.clienteId)),
       criarCelula(descricaoDoVeiculo(ordem.veiculoId)),
       criarCelula(ordem.situacao || '—'),

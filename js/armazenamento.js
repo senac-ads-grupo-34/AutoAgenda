@@ -21,6 +21,8 @@ function buscarPorId(nomeTabela, id) {
   return lerTabela(nomeTabela).find((registro) => registro.id === id);
 }
 
+// Só o Date.now() repete o id quando dois registros são salvos no mesmo milissegundo,
+// por isso entra também um pedaço aleatório.
 function gerarId() {
-  return String(Date.now());
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
