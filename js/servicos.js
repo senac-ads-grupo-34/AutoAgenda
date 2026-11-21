@@ -89,6 +89,10 @@ function salvarServico(evento) {
   mostrarServicos();
 }
 
+function gerarId() {
+  return Date.now();
+}
+
 function editarServico(servico) {
   campoId.value = servico.id;
   campoNome.value = servico.nome;
