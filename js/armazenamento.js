@@ -6,21 +6,16 @@ function lerTabela(nomeTabela) {
   }
 
   try {
-    return JSON.parse(texto);
+    const registros = JSON.parse(texto);
+
+    if (!Array.isArray(registros)) {
+      console.error('Formato inválido na tabela ' + nomeTabela);
+      return [];
+    }
+
+    return registros;
   } catch (erro) {
     console.error('Dados corrompidos na tabela ' + nomeTabela, erro);
     return [];
   }
-}
-
-function salvarTabela(nomeTabela, registros) {
-  localStorage.setItem(nomeTabela, JSON.stringify(registros));
-}
-
-function buscarPorId(nomeTabela, id) {
-  return lerTabela(nomeTabela).find((registro) => registro.id === id);
-}
-
-function gerarId() {
-  return String(Date.now());
 }
