@@ -149,7 +149,6 @@ function mostrarServicos() {
       criarBotao('Excluir', 'Excluir serviço ' + servico.nome, () => excluirServico(servico)),
     );
     linha.append(
-      criarCelula(servico.id)
       criarCelula(servico.nome),
       criarCelula(servico.categoria),
       criarCelula(servico.complexidade),
