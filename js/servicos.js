@@ -1,11 +1,13 @@
 // Serviços (RF03): cadastrar, listar, editar, excluir e pesquisar.
-// Tabela 'servicos': { id, nome, tempoMedio, preco }
+// Tabela 'servicos': { id, nome, categoria, complexidade, tempoMedio, preco }
 
 const formulario = document.getElementById('formulario');
 const campoId = document.getElementById('servico-id');
 const campoNome = document.getElementById('servico-nome');
 const campoTempo = document.getElementById('servico-tempo');
 const campoPreco = document.getElementById('servico-preco');
+const campoCategoria = document.getElementById('servico-categoria');
+const campoComplexidade = document.getElementById('servico-complexidade');
 const tituloFormulario = document.getElementById('titulo-formulario');
 const botaoSalvar = document.getElementById('botao-salvar');
 const botaoCancelar = document.getElementById('botao-cancelar');
@@ -25,6 +27,8 @@ function salvarServico(evento) {
   const servico = {
     id: campoId.value,
     nome: campoNome.value.trim(),
+    categoria: campoCategoria.value,
+    complexidade: campoComplexidade.value,
     tempoMedio: Number(campoTempo.value),
     preco: Number(campoPreco.value),
   };
@@ -33,6 +37,18 @@ function salvarServico(evento) {
   if (servico.nome === '') {
     mostrarMensagem('Informe o nome do serviço.', 'erro');
     campoNome.focus();
+    return;
+  }
+  
+  if (servico.categoria === '') {
+    mostrarMensagem('Selecione uma categoria.', 'erro');
+    campoCategoria.focus();
+    return;
+  }
+  
+  if (servico.complexidade === '') {
+    mostrarMensagem('Selecione o nível de complexidade.', 'erro');
+    campoComplexidade.focus();
     return;
   }
 
@@ -73,9 +89,15 @@ function salvarServico(evento) {
   mostrarServicos();
 }
 
+function gerarId() {
+  return Date.now();
+}
+
 function editarServico(servico) {
   campoId.value = servico.id;
   campoNome.value = servico.nome;
+  campoCategoria.value = servico.categoria;
+  campoComplexidade.value = servico.complexidade;
   campoTempo.value = servico.tempoMedio;
   campoPreco.value = servico.preco;
 
@@ -128,6 +150,8 @@ function mostrarServicos() {
     );
     linha.append(
       criarCelula(servico.nome),
+      criarCelula(servico.categoria),
+      criarCelula(servico.complexidade),
       criarCelula(formatarDuracao(servico.tempoMedio)),
       criarCelula(formatarDinheiro(servico.preco)),
       celulaAcoes,
