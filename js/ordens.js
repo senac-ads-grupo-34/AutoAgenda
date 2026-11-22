@@ -210,14 +210,20 @@ function salvarOrdem(evento) {
 
   const ordens = lerTabela('ordens');
 
-  // RF05: a oficina atende uma ordem por vez, então o horário não pode se repetir.
-  const horarioOcupado = ordens.some((item) =>
-    item.data === ordem.data && item.hora === ordem.hora && item.id !== ordem.id);
-  if (horarioOcupado) {
-    mostrarMensagem('Já existe uma ordem marcada para ' + formatarDataHora(ordem.data, ordem.hora) + '.', 'erro');
-    campoHora.focus();
-    return;
-  }
+  // RF05: a oficina atende uma ordem por vez.
+// Ordens canceladas não bloqueiam o horário.
+const horarioOcupado = ordens.some((item) =>
+  item.data === ordem.data &&
+  item.hora === ordem.hora &&
+  item.id !== ordem.id &&
+  item.situacao !== 'Cancelada'
+);
+
+if (horarioOcupado) {
+  mostrarMensagem('Já existe uma ordem marcada para ' + formatarDataHora(ordem.data, ordem.hora) + '.', 'erro');
+  campoHora.focus();
+  return;
+}
 
   if (ordem.id === '') {
     ordem.id = gerarId();
