@@ -5,7 +5,7 @@
 // Tabela 'ordens': { id, clienteId, veiculoId, data, hora, situacao, itens }
 // data: valor do <input type="date">. Ex.: '2026-11-20'
 // hora: valor do <input type="time">. Ex.: '14:30'
-// situacao: 'Aberta', 'Em andamento' ou 'Concluída'
+// situacao: 'Aberta', 'Em andamento', 'Concluída' ou 'Cancelada'
 // itens: cópia dos serviços escolhidos. Ex.: [{ servicoId, nome: 'Troca de óleo', preco: 120 }]
 
 const formulario = document.getElementById('formulario');
@@ -210,20 +210,18 @@ function salvarOrdem(evento) {
 
   const ordens = lerTabela('ordens');
 
-  // RF05: a oficina atende uma ordem por vez.
-// Ordens canceladas não bloqueiam o horário.
-const horarioOcupado = ordens.some((item) =>
-  item.data === ordem.data &&
-  item.hora === ordem.hora &&
-  item.id !== ordem.id &&
-  item.situacao !== 'Cancelada'
-);
+  // RF05: a oficina atende uma ordem por vez. Ordem cancelada não ocupa o horário.
+  const horarioOcupado = ordens.some((item) =>
+    item.data === ordem.data &&
+    item.hora === ordem.hora &&
+    item.id !== ordem.id &&
+    item.situacao !== 'Cancelada');
 
-if (horarioOcupado) {
-  mostrarMensagem('Já existe uma ordem marcada para ' + formatarDataHora(ordem.data, ordem.hora) + '.', 'erro');
-  campoHora.focus();
-  return;
-}
+  if (horarioOcupado) {
+    mostrarMensagem('Já existe uma ordem marcada para ' + formatarDataHora(ordem.data, ordem.hora) + '.', 'erro');
+    campoHora.focus();
+    return;
+  }
 
   if (ordem.id === '') {
     ordem.id = gerarId();

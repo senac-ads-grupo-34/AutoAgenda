@@ -40,18 +40,16 @@ function salvarCliente(evento) {
     clientes.push(cliente);
     mostrarMensagem('Cliente cadastrado com sucesso.');
   } else {
-  const posicao = clientes.findIndex(
-    (item) => item.id === cliente.id
-  );
+    const posicao = clientes.findIndex((item) => item.id === cliente.id);
 
-  if (posicao === -1) {
-    mostrarMensagem('Cliente não encontrado para edição.', 'erro');
-    return;
+    if (posicao === -1) {
+      mostrarMensagem('Cliente não encontrado para edição.', 'erro');
+      return;
+    }
+
+    clientes[posicao] = cliente;
+    mostrarMensagem('Cliente atualizado com sucesso.');
   }
-
-  clientes[posicao] = cliente;
-  mostrarMensagem('Cliente atualizado com sucesso.');
-}
 
   salvarTabela('clientes', clientes);
   limparFormulario();

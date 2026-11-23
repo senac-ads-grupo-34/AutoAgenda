@@ -49,23 +49,19 @@ function salvarVeiculo(evento) {
 
   const cliente = buscarPorId('clientes', veiculo.clienteId);
 
-if (!cliente) {
-  mostrarMensagem('Selecione um cliente válido.', 'erro');
-  campoCliente.focus();
-  return;
-}
+  if (!cliente) {
+    mostrarMensagem('Selecione um cliente válido.', 'erro');
+    campoCliente.focus();
+    return;
+  }
 
-const anoMaximo = new Date().getFullYear() + 1;
+  const anoMaximo = new Date().getFullYear() + 1;
 
-if (
-  !Number.isInteger(veiculo.ano) ||
-  veiculo.ano < 1900 ||
-  veiculo.ano > anoMaximo
-) {
-  mostrarMensagem('Informe um ano válido para o veículo.', 'erro');
-  campoAno.focus();
-  return;
-}
+  if (!Number.isInteger(veiculo.ano) || veiculo.ano < 1900 || veiculo.ano > anoMaximo) {
+    mostrarMensagem('Informe um ano válido para o veículo.', 'erro');
+    campoAno.focus();
+    return;
+  }
 
   const veiculos = lerTabela('veiculos');
 
@@ -81,18 +77,16 @@ if (
     veiculos.push(veiculo);
     mostrarMensagem('Veículo cadastrado com sucesso.');
   } else {
-  const posicao = veiculos.findIndex(
-    (item) => item.id === veiculo.id
-  );
+    const posicao = veiculos.findIndex((item) => item.id === veiculo.id);
 
-  if (posicao === -1) {
-    mostrarMensagem('Veículo não encontrado para edição.', 'erro');
-    return;
+    if (posicao === -1) {
+      mostrarMensagem('Veículo não encontrado para edição.', 'erro');
+      return;
+    }
+
+    veiculos[posicao] = veiculo;
+    mostrarMensagem('Veículo atualizado com sucesso.');
   }
-
-  veiculos[posicao] = veiculo;
-  mostrarMensagem('Veículo atualizado com sucesso.');
-}
 
   salvarTabela('veiculos', veiculos);
   limparFormulario();

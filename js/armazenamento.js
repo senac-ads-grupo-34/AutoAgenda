@@ -6,7 +6,15 @@ function lerTabela(nomeTabela) {
   }
 
   try {
-    return JSON.parse(texto);
+    const registros = JSON.parse(texto);
+
+    // Evita que um valor salvo em outro formato quebre as páginas.
+    if (!Array.isArray(registros)) {
+      console.error('Formato inválido na tabela ' + nomeTabela);
+      return [];
+    }
+
+    return registros;
   } catch (erro) {
     console.error('Dados corrompidos na tabela ' + nomeTabela, erro);
     return [];
@@ -18,7 +26,8 @@ function salvarTabela(nomeTabela, registros) {
 }
 
 function buscarPorId(nomeTabela, id) {
-  return lerTabela(nomeTabela).find((registro) => registro.id === id);
+  // String() porque alguns serviços chegaram a ser salvos com id numérico.
+  return lerTabela(nomeTabela).find((registro) => String(registro.id) === String(id));
 }
 
 // Só o Date.now() repete o id quando dois registros são salvos no mesmo milissegundo,
