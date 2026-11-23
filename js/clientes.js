@@ -41,6 +41,12 @@ function salvarCliente(evento) {
     mostrarMensagem('Cliente cadastrado com sucesso.');
   } else {
     const posicao = clientes.findIndex((item) => item.id === cliente.id);
+
+    if (posicao === -1) {
+      mostrarMensagem('Cliente não encontrado para edição.', 'erro');
+      return;
+    }
+
     clientes[posicao] = cliente;
     mostrarMensagem('Cliente atualizado com sucesso.');
   }

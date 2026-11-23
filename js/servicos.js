@@ -67,7 +67,7 @@ function salvarServico(evento) {
   const servicos = lerTabela('servicos');
 
   const nomeRepetido = servicos.some((item) =>
-    item.nome.toLowerCase() === servico.nome.toLowerCase() && item.id !== servico.id);
+    item.nome.toLowerCase() === servico.nome.toLowerCase() && String(item.id) !== servico.id);
   if (nomeRepetido) {
     mostrarMensagem('Já existe um serviço com o nome ' + servico.nome + '.', 'erro');
     campoNome.focus();
@@ -79,7 +79,7 @@ function salvarServico(evento) {
     servicos.push(servico);
     mostrarMensagem('Serviço cadastrado com sucesso.');
   } else {
-    const posicao = servicos.findIndex((item) => item.id === servico.id);
+    const posicao = servicos.findIndex((item) => String(item.id) === servico.id);
     servicos[posicao] = servico;
     mostrarMensagem('Serviço atualizado com sucesso.');
   }
@@ -87,10 +87,6 @@ function salvarServico(evento) {
   salvarTabela('servicos', servicos);
   limparFormulario();
   mostrarServicos();
-}
-
-function gerarId() {
-  return Date.now();
 }
 
 function editarServico(servico) {

@@ -25,7 +25,12 @@ function criarBotao(texto, descricao, aoClicar) {
 
 // 150.5 -> 'R$ 150,50'
 function formatarDinheiro(valor) {
-  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const numero = Number(valor);
+
+  if (!Number.isFinite(numero)) {
+    return '—';
+  }
+  return numero.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 // Data de hoje no formato do <input type="date">, ex.: '2026-11-20'.

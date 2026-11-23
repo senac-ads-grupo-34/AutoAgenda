@@ -7,7 +7,7 @@ document.getElementById('total-veiculos').textContent = lerTabela('veiculos').le
 document.getElementById('total-servicos').textContent = lerTabela('servicos').length;
 
 const ordensDeHoje = lerTabela('ordens')
-  .filter((ordem) => ordem.data === hoje)
+  .filter((ordem) => ordem.data === hoje && ordem.situacao !== 'Cancelada')
   .sort((a, b) => String(a.hora || '').localeCompare(String(b.hora || '')));
 
 document.getElementById('total-hoje').textContent = ordensDeHoje.length;
